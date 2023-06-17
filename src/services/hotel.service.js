@@ -46,7 +46,7 @@ export const loginUser = async ({ username, password }) => {
 
 export const getRooms = async ({ id = '' } = '') => {
   try {
-    await new Promise(resolve => setTimeout(resolve, 10000))
+    // await new Promise(resolve => setTimeout(resolve, 10000))
     const response = await fetch(`${URL}/api/hotel/room?id=${id}`, {
       headers: {
         'Content-Type': 'application/json',
