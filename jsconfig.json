@@ -1,7 +1,13 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/app/components/*",
+        "./src/services/*",
+        "./src/app/context/*",
+        "./src/app/hooks/*",
+        "./src/utils/*"
+      ]
     }
   }
 }
