@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 
 export const config = {
-  matcher: ['/']
+  matcher: ['/', '/roomtype']
 }
 export function middleware(request) {
   const accessToken = request.cookies.has('accessToken')

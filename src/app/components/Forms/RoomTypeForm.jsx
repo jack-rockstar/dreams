@@ -1,24 +1,24 @@
-import useToggle from '../../app/hooks/useToggle'
-import CloseIcon from '../Icons/CloseIcon'
+import CloseIcon from '@/Icons/CloseIcon'
+import useToggle from '@/useToggle'
 
 export default function RoomTypeForm() {
   const [isToggleOn, handleToggle] = useToggle()
 
   return (
-    <div className='flex m-3 relative'>
-      <button onClick={handleToggle} className='inline-flex items-center text-white font-medium rounded-lg text-sm px-6 py-2 focus:scale-105 hover:scale-105 transition-all bg-gradient-to-r from-blue-500 to-blue-600 mb-3' type='button'>
+    <div className='relative flex m-3'>
+      <button onClick={handleToggle} className='inline-flex items-center px-6 py-2 mb-3 text-sm font-medium text-white transition-all rounded-lg focus:scale-105 hover:scale-105 bg-gradient-to-r from-blue-500 to-blue-600' type='button'>
         Nuevo Registro
       </button>
       {
         isToggleOn && (
           <div aria-hidden='true' className='absolute z-10 w-full p-4 md:inset-0 h-[calc(100%-1rem)] max-h-full flex justify-center content-center'>
 
-            <div className='relative min-h-screen w-auto'>
+            <div className='relative w-auto min-h-screen'>
               <div className='relative flex w-[600px] rounded-lg shadow -top-24 bg-gray-700'>
                 <button onClick={handleToggle} type='button' className='absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-800 dark:hover:text-white' data-modal-hide='authentication-modal'>
                   <CloseIcon />
                 </button>
-                <div className='px-6 py-6 lg:px-8 w-full'>
+                <div className='w-full px-6 py-6 lg:px-8'>
                   <h3 className='mb-6 text-xl font-medium text-gray-900 dark:text-white'>CREAR TIPO HABITACION</h3>
                   <form className='space-y-6' action='#'>
                     <div className='grid grid-cols-2 gap-4'>
@@ -43,7 +43,7 @@ export default function RoomTypeForm() {
 
                     </div>
                     <div className='flex'>
-                      <div className='z-10 flex  bg-white divide-y divide-gray-100 rounded-lg shadow w-60 dark:bg-gray-700 dark:divide-gray-600'>
+                      <div className='z-10 flex bg-white divide-y divide-gray-100 rounded-lg shadow w-60 dark:bg-gray-700 dark:divide-gray-600'>
                         <ul className='p-3 space-y-1 text-sm text-gray-700 dark:text-gray-200'>
                           <li>
                             <div className='flex p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-600'>

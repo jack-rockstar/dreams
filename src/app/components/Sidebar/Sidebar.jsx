@@ -11,7 +11,7 @@ const menus = [
     href: null,
     title: 'Habitaciones',
     icon: <FavoriteIcon />,
-    subMenus: [{ name: 'Tipo Habitacion', href: '/roomType' }, { name: 'Habitaciones', href: '/room' }],
+    subMenus: [{ name: 'Tipo Habitacion', href: '/roomtype' }, { name: 'Habitaciones', href: '/room' }],
     flag: 'Pro'
   },
   {

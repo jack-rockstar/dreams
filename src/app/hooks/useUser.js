@@ -1,7 +1,7 @@
 'use client'
 import { LoginContext } from '@/contextUser'
 import { deleteCookie, setCookie } from '@/cookie'
-import { loginUser } from '../../services/hotel.service'
+import { loginUser } from '@Service/hotelClient'
 import { useRouter } from 'next/navigation'
 import { useCallback, useContext, useState } from 'react'
 
