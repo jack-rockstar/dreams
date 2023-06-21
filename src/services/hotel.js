@@ -44,7 +44,6 @@ export const getRoomsType = async () => {
     })
 
     const dataRes = await response.json()
-    console.log({ dataRes })
     if (!response.ok) {
       throw dataRes
     }

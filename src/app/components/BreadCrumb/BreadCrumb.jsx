@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 
 const ArrowRightIcon = () => {
   return <svg aria-hidden='true' className='w-6 h-6 mr-2 text-gray-400' fill='currentColor' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'><path fillRule='evenodd' d='M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z' clipRule='evenodd' /></svg>
@@ -9,8 +10,8 @@ const HomeIcon = () => {
 }
 
 export default function BreadCrumb() {
-  // const { 0: path } = useLocation()
-  // const pathsName = path.split('/').filter(path => path !== '')
+  const paths = usePathname()
+  const pathsName = paths.split('/').filter(Boolean)
   return (
     <nav className='flex justify-end pb-4 mb-10 mr-4 border-b-2 border-gray-700'>
       <ol className='inline-flex items-center space-x-1 md:space-x-3'>
@@ -20,7 +21,7 @@ export default function BreadCrumb() {
             Inicio
           </Link>
         </li>
-        {/* {
+        {
           pathsName.map((e, index) => {
             const capitalizePath = `${e.charAt(0).toUpperCase()}${e.slice(1)}`
             return (
@@ -32,7 +33,7 @@ export default function BreadCrumb() {
               </li>
             )
           })
-        } */}
+        }
       </ol>
     </nav>
   )
