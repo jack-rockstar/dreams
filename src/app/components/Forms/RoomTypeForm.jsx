@@ -1,3 +1,4 @@
+'use client'
 import CloseIcon from '@/Icons/CloseIcon'
 import useToggle from '@/useToggle'
 
