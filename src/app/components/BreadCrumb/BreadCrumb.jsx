@@ -13,7 +13,7 @@ export default function BreadCrumb() {
   const paths = usePathname()
   const pathsName = paths.split('/').filter(Boolean)
   return (
-    <nav className='flex justify-end pb-4 mb-10 mr-4 border-b-2 border-gray-700'>
+    <nav className='flex justify-end pb-4 mr-4 border-b-2 border-gray-700'>
       <ol className='inline-flex items-center space-x-1 md:space-x-3'>
         <li className='inline-flex items-center'>
           <Link href='/' className='inline-flex items-center text-sm font-medium text-gray-400 hover:text-white'>
@@ -26,7 +26,7 @@ export default function BreadCrumb() {
             const capitalizePath = `${e.charAt(0).toUpperCase()}${e.slice(1)}`
             return (
               <li key={index} className='inline-flex items-center ml-2'>
-                <Link href={`/${e}`} className='inline-flex items-center mr-2 text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white'>
+                <Link href={`/${e}`} className='inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white'>
                   <ArrowRightIcon />
                   {capitalizePath}
                 </Link>

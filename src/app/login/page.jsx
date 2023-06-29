@@ -4,6 +4,8 @@ import Card from '@/Layout/Card'
 import LockBoxIcon from '@/Logos/LockBoxIcon'
 import useUser from '../hooks/useUser'
 import Input from '@/General/Input'
+import Label from '@/General/Label'
+import Section from '@/General/Section'
 
 export const metadata = {
   title: 'Iniciar Sesion | Dreams Room',
@@ -33,13 +35,14 @@ export default function Login() {
             </div>
             <form onSubmit={handleLogin} className='mt-20 space-y-4'>
 
-              <div className=''>
-                <Input required type='text' htmlFor='username' label='Usuario' name='username' />
-              </div>
-              <div>
-                <Input required type='password' htmlFor='password' label='Contraseña' name='password' />
-              </div>
-
+              <Section>
+                <Label label='Usuario' className='text-base font-bold text-gray-900 rounded-lg' htmlFor='username' />
+                <Input className='text-gray-900 border-2 border-gray-300 bg-gray-50' required type='text' name='username' />
+              </Section>
+              <Section>
+                <Label label='Contraseña' className='text-base font-bold text-gray-900 rounded-lg' htmlFor='password' />
+                <Input className='text-gray-900 border-2 border-gray-300 bg-gray-50' required type='password' name='password' />
+              </Section>
               <button type='submit' className='w-full text-white bg-blue-700 hover:bg-blue-800  focus:ring-blue-300  rounded-lg text-lg px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700  font-medium'>
                 {
                   isLoading

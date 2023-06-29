@@ -20,6 +20,7 @@
     "tailwindcss": "3.3.2"
   },
   "devDependencies": {
+    "react-icons": "4.10.1",
     "standard": "17.1.0"
   }
 }

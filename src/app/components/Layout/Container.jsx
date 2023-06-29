@@ -1,10 +1,10 @@
 export default function Container({ children }) {
   return (
 
-    <div className='h-screen py-4 bg-principal sm:ml-64'>
-      <div className='h-full min-h-screen mt-20'>
+    <main className='h-screen bg-principal sm:ml-64'>
+      <section className='h-full min-h-screen pt-20'>
         {children}
-      </div>
-    </div>
+      </section>
+    </main>
   )
 }

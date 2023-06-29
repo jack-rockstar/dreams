@@ -53,7 +53,7 @@ const menus = [
     title: 'Seguridad y Permisos',
     icon: <SessionIcon />,
     flag: null,
-    subMenus: [{ name: 'Permisos', href: '/permises' }, { name: 'Usuarios', href: '/users' }, { name: 'Roles', href: '/role' }]
+    subMenus: [{ name: 'Permisos', href: '/security/permises' }, { name: 'Usuarios', href: '/users' }, { name: 'Roles', href: '/role' }]
 
   }
 
