@@ -6,7 +6,6 @@ import useUser from '@/useUser'
 
 export default function AuthProvider({ children }) {
   const { dataUser } = useUser()
-  console.log({ dataUser })
   const user = dataUser ? JSON.parse(dataUser) : null
 
   return (
