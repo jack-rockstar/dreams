@@ -1,5 +1,4 @@
 export default function DetailsRoom({ room }) {
-  console.log({ room })
   return (
     <article className='grid items-center justify-center w-full h-20 grid-cols-3 py-4 mb-4 bg-gray-700 rounded-lg'>
       <div>
@@ -9,7 +8,7 @@ export default function DetailsRoom({ room }) {
         </section>
         <section className='flex gap-4 px-3'>
           <span className='text-gray-200 text-md'>Precio Total: </span>
-          <b className='text-gray-950 text-md'>${room?.priceRoom}.00</b>
+          <b className='text-gray-950 text-md'>${room?.priceRoom}</b>
         </section>
       </div>
       <div>

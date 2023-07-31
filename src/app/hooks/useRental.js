@@ -2,11 +2,13 @@
 
 import { addApiRental } from '@Service/hotelClient'
 import { useState } from 'react'
+import useGuest from './useGuest'
 import useUser from './useUser'
 
 export default function useRental() {
-  const [guest, setGuest] = useState({ data: null, status: false, message: null })
+  const [guest] = useState({ data: null, status: false, message: null })
   const [loading, setLoading] = useState(false)
+  const { addGuest } = useGuest()
   const { dataUser } = useUser()
   const user = JSON.parse(dataUser)
 
@@ -16,12 +18,25 @@ export default function useRental() {
       ...request,
       userId: user.id
     }
-    console.log({ data })
-    const responseClient = await addApiRental(data)
-    setLoading(false)
-    if (!responseClient) return setGuest({ status: false, data: null, message: 'Error al guardar el cliente' })
 
-    return setGuest({ status: true, data: '', message: 'Se guardo el cliente exitosamente' })
+    const { guestId } = data
+    if (!guestId) {
+      const { data: responseGuest } = await addGuest(data)
+      const requestRental = {
+        ...data,
+        guestId: responseGuest.data.id
+      }
+
+      const { status: statusRental, data: dataRental } = await addApiRental(requestRental)
+      if (!statusRental) return { status: false, data: dataRental }
+
+      return { status: true, data: dataRental }
+    }
+
+    const responseRental = await Promise.all([addApiRental(), addGuest()])
+    if (!responseRental) return { status: false, data: responseRental }
+
+    return { status: true, data: responseRental }
   }
 
   return {

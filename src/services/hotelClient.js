@@ -31,10 +31,11 @@ export const getHuespedByDocument = async ({ typeDoc, numberDoc }) => {
     })
 
     const data = await response.json()
-    return data
+    if (!response.ok) throw data
+    return { status: response.ok, data }
   } catch (error) {
     console.log(error)
-    return null
+    return { status: false, data: error }
   }
 }
 
@@ -66,10 +67,28 @@ export const addApiRental = async (request) => {
     })
 
     const data = await response.json()
-    console.log({ data })
-    return data
+    if (!response.ok) throw data
+    return { status: response.ok, data }
   } catch (error) {
     console.log(error)
-    return null
+    return { status: false, data: error }
+  }
+}
+export const addApiGuest = async (request) => {
+  try {
+    const response = await fetch('/api/hotel/guest', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(request)
+    })
+
+    const data = await response.json()
+    if (!response.ok) throw data
+    return { status: response.ok, data }
+  } catch (error) {
+    console.log(error)
+    return { status: false, data: error }
   }
 }

@@ -1,6 +1,6 @@
 'use client'
 import { DateTime } from 'luxon'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import DetailsRoom from '@/DetailsRoom/DetailsRoom'
 import Input from '@/General/Input'
@@ -12,6 +12,8 @@ import Select from '@/General/Select'
 import Title from '@/General/Title'
 import useGuest from '@/useGuest'
 import useRental from '@/useRental'
+import { ImSpinner8 } from 'react-icons/im'
+import Swal from 'sweetalert2'
 
 const NATIONALITY = [
   {
@@ -30,35 +32,76 @@ const NATIONALITY = [
 
 export default function FormRental({ closeModal, isOpen, room }) {
   const date = DateTime.local()
-  const { guest, getGuestByDocument, loading } = useGuest()
+  const [loadings, setLoadings] = useState({ search: false, rental: false })
+  const { getGuestByDocument } = useGuest()
   const { addRental } = useRental()
   const [doc, setDoc] = useState({ typeDoc: 'DNI', numberDoc: '' })
-  const [dataClient, setDataClient] = useState(guest.data)
-
-  useEffect(() => {
-    setDataClient(guest.data)
-  }, [guest])
-
-  const fechaNacimiento = dataClient ? DateTime.fromISO(dataClient.birthDate).toUTC().toFormat('yyyy-MM-dd') : ''
+  const [dataClient, setDataClient] = useState(null)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    setLoadings((prev) => ({
+      ...prev,
+      rental: true
+    }))
     const form = e.currentTarget
     const formData = new FormData(form)
     const data = Object.fromEntries(formData.entries())
     const request = {
-      status: 'OCUPADO',
+      ...data,
       roomId: room.id,
-      guestId: dataClient.id,
+      guestId: dataClient?.id,
       admissionDate: data.entryDate.replace('T', ' '),
       departureDate: data.departureDate.replace('T', ' '),
-      fullPayment: room.priceRoom,
-      paymentInAdvance: data.prepayment
+      fullPayment: room.priceRoom
     }
 
-    const dataRes = await addRental({ request })
-    console.log({ dataRes })
+    const { status } = await addRental({ request })
+    setLoadings((prev) => ({
+      ...prev,
+      rental: false
+    }))
+    if (!status) {
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'No se pudo realizar la reserva.',
+        showConfirmButton: false,
+        timer: 1500
+      })
+      return
+    }
+
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'Se realizo la reserva correctamente',
+      showConfirmButton: false,
+      timer: 1500
+    })
+    closeModal()
   }
+
+  const handleSearch = async (doc) => {
+    setLoadings((prev) => ({
+      ...prev,
+      search: true
+    }))
+    const { status, data: guest } = await getGuestByDocument(doc)
+    setLoadings((prev) => ({
+      ...prev,
+      search: false
+    }))
+    console.log({ statatusClient: status })
+    if (!status) {
+      console.log(`Cliente no encontrado, ${JSON.stringify(guest)}`)
+      setDataClient(null)
+      return
+    }
+    setDataClient(guest.data)
+  }
+
+  const fechaNacimiento = dataClient ? DateTime.fromISO(dataClient.birthDate).toUTC().toFormat('yyyy-MM-dd') : ''
 
   return (
     <Modal closeModal={closeModal} isOpen={isOpen}>
@@ -70,7 +113,7 @@ export default function FormRental({ closeModal, isOpen, room }) {
           <Section cols={3}>
             <div className='col-span-2'>
               <Label label='Documento' className='text-sm text-white' htmlFor='typeDoc' />
-              <InputSearch loading={loading} searchButton={() => getGuestByDocument(doc)} setValue={setDoc} placeholder='Nro documento' />
+              <InputSearch loading={loadings.search} searchButton={() => handleSearch(doc)} setValue={setDoc} placeholder='Nro documento' />
             </div>
             <div>
               <Label label='Fecha Nacimiento' className='text-sm text-white ' htmlFor='birthDate' />
@@ -108,7 +151,7 @@ export default function FormRental({ closeModal, isOpen, room }) {
             </div>
             <div>
               <Label label='Correo' className='text-sm text-white ' htmlFor='email' />
-              <Input defaultValue={dataClient?.email} placeholder='Correo electronico' className='text-white bg-gray-600 rounded-lg focus:outline-none focus:ring-0' name='mail' />
+              <Input defaultValue={dataClient?.email} placeholder='Correo electronico' className='text-white bg-gray-600 rounded-lg focus:outline-none focus:ring-0' name='email' />
             </div>
           </Section>
         </article>
@@ -129,9 +172,9 @@ export default function FormRental({ closeModal, isOpen, room }) {
             <div>
               <Label label='Pago Adelanto' className='text-sm text-white ' htmlFor='name' />
               <div className='flex'>
-                <Input placeholder='60' required className='text-white bg-gray-600 rounded-l-lg focus:outline-none focus:ring-0' name='prepayment' />
+                <Input placeholder='60' required className='text-white bg-gray-600 rounded-l-lg focus:outline-none focus:ring-0' name='paymentInAdvance' />
                 <span title='Pago total' className='inline-flex items-center px-3 text-sm font-bold text-gray-300 bg-gray-600 border-l border-l-gray-700 rounded-r-md'>
-                  ${room?.priceRoom}.00
+                  ${room?.priceRoom}
                 </span>
               </div>
             </div>
@@ -144,7 +187,13 @@ export default function FormRental({ closeModal, isOpen, room }) {
         </article>
 
         <div className='text-end'>
-          <button type='submit' className='focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 mb-2 bg-green-600 hover:bg-green-700 focus:ring-green-800'>Reservar</button>
+          <button type='submit' className='focus:outline-none text-white focus:ring-4 font-medium rounded-lg text-sm px-8 py-2.5 mr-2 mb-2 bg-green-600 hover:bg-green-700 focus:ring-green-800'>
+            {
+              loadings.rental
+                ? <ImSpinner8 className='text-white animate-spin' />
+                : 'Reservar'
+            }
+          </button>
         </div>
       </form>
 

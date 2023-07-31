@@ -1,24 +1,32 @@
 'use client'
 
-import { getHuespedByDocument } from '@Service/hotelClient'
+import { addApiGuest, getHuespedByDocument } from '@Service/hotelClient'
 import { useState } from 'react'
 
 export default function useGuest() {
-  const [guest, setGuest] = useState({ data: null, status: false, message: null })
+  const [guest] = useState({ data: null, status: false, message: null })
   const [loading, setLoading] = useState(false)
 
   const getGuestByDocument = async ({ typeDoc, numberDoc }) => {
     setLoading(true)
-    const responseClient = await getHuespedByDocument({ typeDoc, numberDoc })
+    const { status, data } = await getHuespedByDocument({ typeDoc, numberDoc })
     setLoading(false)
-    if (!responseClient) return setGuest({ status: false, data: null, message: 'No se encontro usuario con ese documento' })
+    if (!status) return { status: false, data }
 
-    return setGuest({ status: true, data: responseClient.data, message: 'Cliente encontrado correctamente' })
+    return { status: true, data }
+  }
+
+  const addGuest = async (request) => {
+    const { status, data } = await addApiGuest(request)
+    if (!status) return { status: false, data }
+
+    return { status: true, data }
   }
 
   return {
     guest,
     getGuestByDocument,
+    addGuest,
     loading
   }
 }
