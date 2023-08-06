@@ -13,6 +13,13 @@ export const getCookie = (cname) => {
   }
   return ''
 }
-export const setCookie = (cname, cvalue) => {
-  window.document.cookie = cname + '=' + cvalue + '; ' + 'path=/'
+export const setCookie = ({ cname, cvalue, cTimeMinutes = null }) => {
+  const ahora = new Date()
+  ahora.setMinutes(ahora.getMinutes() + cTimeMinutes)
+
+  if (!cTimeMinutes) {
+    window.document.cookie = `${cname}=${cvalue};path=/`
+    return
+  }
+  window.document.cookie = `${cname}=${cvalue};expires=${ahora.toUTCString()};path=/`
 }

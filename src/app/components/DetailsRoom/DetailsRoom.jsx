@@ -13,7 +13,7 @@ export default function DetailsRoom({ room }) {
       </div>
       <div>
         {
-          room.roomType.roomFeatures.slice(0, 2).map((e) => (
+          room?.roomType.roomFeatures.slice(0, 2).map((e) => (
             <section key={e.id} className='flex gap-4 px-3'>
               <span className='text-gray-200 text-md'>{e.featureName}: </span>
               <b className='text-gray-950 text-md'>{e.featuresValue}</b>

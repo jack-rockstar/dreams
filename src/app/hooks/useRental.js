@@ -33,10 +33,12 @@ export default function useRental() {
       return { status: true, data: dataRental }
     }
 
-    const responseRental = await Promise.all([addApiRental(), addGuest()])
-    if (!responseRental) return { status: false, data: responseRental }
+    // const responseRental = await Promise.all([addApiRental(), addGuest()])
+    addGuest(data)
+    const { status: statusRental, data: dataRental } = await addApiRental(data)
+    if (!statusRental) return { status: false, data: dataRental }
 
-    return { status: true, data: responseRental }
+    return { status: true, data: dataRental }
   }
 
   return {

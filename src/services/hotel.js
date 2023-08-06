@@ -1,12 +1,12 @@
 import { cookies } from 'next/headers'
-import { URL } from './config'
+import { URL_BASE } from './config'
 
 export const getRooms = async ({ id = '' } = '') => {
   const accessToken = cookies().get('accessToken')
-
   try {
     // await new Promise(resolve => setTimeout(resolve, 10000))
-    const response = await fetch(`${URL}/api/hotel/room?id=${id}`, {
+    const URL_API = `${URL_BASE}/api/hotel/room?id=${id}`
+    const response = await fetch(URL_API, {
       headers: {
         'Content-Type': 'application/json',
         Cookie: `${accessToken.name}=${accessToken.value}`
@@ -19,7 +19,6 @@ export const getRooms = async ({ id = '' } = '') => {
     })
 
     const dataRes = await response.json()
-
     if (!response.ok) {
       throw dataRes
     }
@@ -33,7 +32,7 @@ export const getRooms = async ({ id = '' } = '') => {
 export const getRoomsType = async () => {
   const accessToken = cookies().get('accessToken')
   try {
-    const response = await fetch(`${URL}/api/hotel/roomtypes`, {
+    const response = await fetch(`${URL_BASE}/api/hotel/roomtypes`, {
       headers: {
         'Content-Type': 'application/json',
         Cookie: `${accessToken.name}=${accessToken.value}`

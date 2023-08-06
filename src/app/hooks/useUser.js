@@ -15,8 +15,8 @@ export default function useUser() {
     setState({ loading: true, error: false })
     loginUser({ username, password })
       .then((data) => {
-        setCookie('accessToken', data.accessToken)
-        setCookie('user', JSON.stringify(data.user))
+        setCookie({ cname: 'accessToken', cvalue: data.accessToken, cTimeMinutes: 60 })
+        setCookie({ cname: 'user', cvalue: JSON.stringify({ ...data.user, accessToken: data.accessToken }) })
         setDataUser(JSON.stringify(data.user))
         setState({ loading: false, error: false })
         router.push('/')

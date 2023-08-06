@@ -1,8 +1,8 @@
-import { URL } from './config'
+import { URL_BASE } from './config'
 
 export const loginUser = async ({ username, password }) => {
   try {
-    const response = await fetch(`${URL}/login`, {
+    const response = await fetch(`${URL_BASE}/login`, {
       method: 'POST',
       body: JSON.stringify({ username, password }),
       headers: {

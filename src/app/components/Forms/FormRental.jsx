@@ -1,6 +1,6 @@
 'use client'
 import { DateTime } from 'luxon'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 
 import DetailsRoom from '@/DetailsRoom/DetailsRoom'
 import Input from '@/General/Input'
@@ -30,13 +30,26 @@ const NATIONALITY = [
   }
 ]
 
+const TIPO_PAGO = [
+  {
+    label: 'PAGAR TODO',
+    value: 'PT'
+  },
+  {
+    label: 'PAGAR ADELANTO',
+    value: 'PA'
+  }
+]
+
 export default function FormRental({ closeModal, isOpen, room }) {
   const date = DateTime.local()
   const [loadings, setLoadings] = useState({ search: false, rental: false })
+  const [doc, setDoc] = useState({ typeDoc: 'DNI', numberDoc: '' })
+  const [tipoPago, setTipoPago] = useState('PT')
   const { getGuestByDocument } = useGuest()
   const { addRental } = useRental()
-  const [doc, setDoc] = useState({ typeDoc: 'DNI', numberDoc: '' })
   const [dataClient, setDataClient] = useState(null)
+  const formRef = useRef(null)
 
   const handleSubmit = async (e) => {
     e.preventDefault()
@@ -79,6 +92,8 @@ export default function FormRental({ closeModal, isOpen, room }) {
       showConfirmButton: false,
       timer: 1500
     })
+    setDataClient(null)
+    formRef.current.reset()
     closeModal()
   }
 
@@ -92,7 +107,6 @@ export default function FormRental({ closeModal, isOpen, room }) {
       ...prev,
       search: false
     }))
-    console.log({ statatusClient: status })
     if (!status) {
       console.log(`Cliente no encontrado, ${JSON.stringify(guest)}`)
       setDataClient(null)
@@ -107,7 +121,7 @@ export default function FormRental({ closeModal, isOpen, room }) {
     <Modal closeModal={closeModal} isOpen={isOpen}>
       <Title>Alquilar habitacion</Title>
       <DetailsRoom room={room} />
-      <form className='space-y-6' onSubmit={handleSubmit}>
+      <form ref={formRef} className='space-y-6' onSubmit={handleSubmit}>
         <article id='frmGuest'>
           <h3 className='mb-2 text-xl font-medium text-left text-white underline'>Registrar Cliente</h3>
           <Section cols={3}>
@@ -117,7 +131,7 @@ export default function FormRental({ closeModal, isOpen, room }) {
             </div>
             <div>
               <Label label='Fecha Nacimiento' className='text-sm text-white ' htmlFor='birthDate' />
-              <Input defaultValue={fechaNacimiento} type='date' className='text-white bg-gray-600 rounded-lg focus:outline-none focus:ring-0' required name='birthDate' />
+              <Input defaultValue={fechaNacimiento} type='date' className='text-white bg-gray-600 rounded-lg focus:outline-none focus:ring-0 ' required name='birthDate' />
             </div>
           </Section>
           <Section cols={3}>
@@ -168,19 +182,24 @@ export default function FormRental({ closeModal, isOpen, room }) {
               <Input type='datetime-local' defaultValue={date.toFormat('yyyy-MM-dd HH:mm')} required name='departureDate' className='text-white bg-gray-600 rounded-lg focus:outline-none focus:ring-0' />
             </div>
           </Section>
-          <Section cols={2}>
+          <Section cols={1}>
             <div>
               <Label label='Pago Adelanto' className='text-sm text-white ' htmlFor='name' />
               <div className='flex'>
-                <Input placeholder='60' required className='text-white bg-gray-600 rounded-l-lg focus:outline-none focus:ring-0' name='paymentInAdvance' />
-                <span title='Pago total' className='inline-flex items-center px-3 text-sm font-bold text-gray-300 bg-gray-600 border-l border-l-gray-700 rounded-r-md'>
+
+                <Select
+                  className='w-full py-2.5 rounded-l-lg focus:ring-0'
+                  required
+                  name='typePay'
+                  onChange={(e) => setTipoPago(e.target.value)}
+                  defaultValue={tipoPago}
+                  options={TIPO_PAGO}
+                />
+                <Input name='paymentInAdvance' defaultValue={tipoPago === 'PT' ? room?.priceRoom : ''} required className='text-white bg-gray-600 focus:outline-none focus:ring-0' />
+                <span title='Pago total' className='inline-flex items-center px-3 text-sm font-bold text-gray-300 border-l bg-rose-600 border-l-gray-700 rounded-r-md'>
                   ${room?.priceRoom}
                 </span>
               </div>
-            </div>
-            <div>
-              <Label label='Pago Restante' className='text-sm text-white ' htmlFor='lastnameFath' />
-              <Input required placeholder='$60' className='text-white bg-gray-600 rounded-lg focus:outline-none focus:ring-0' name='remainingPayment' />
             </div>
           </Section>
 

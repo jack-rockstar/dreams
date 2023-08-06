@@ -1,3 +1,21 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.custom-scrollbar-dark {
+  scrollbar-width: thin;
+  scrollbar-color: gray;
+}
+
+.custom-scrollbar-dark::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar-dark::-webkit-scrollbar-track {
+  background: #464444;
+}
+
+.custom-scrollbar-dark::-webkit-scrollbar-thumb {
+  background-color: rgb(228, 225, 225);
+  border-radius: 3px;
+}
